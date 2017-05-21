@@ -7,7 +7,8 @@
 > 1. 下載程式到 KISSlicer 目錄中
 > 2. 執行 KISSlicer，切換到`Printer`分頁，再切換到`Firmware`子分頁中
 > 3. 在`Post-Process`項目中加入命令，例如：`dgm-temp-tower.py -p "<FILE>"`
-![](./image/post-process.png)
+> ![](./image/post-process.png)
+>
 > 可利用 & 串連多個命令，例如
 > `dgm-heatbed-off.py "<FILE>" 1 & dgm-pause.py -p "<FILE>" 5`
 > 表示在 1mm 高的位置關閉熱床，然後在 5mm 高的位置暫停列印
