@@ -6,7 +6,8 @@ You can run the script in KISSlicer,
 > 1. Download the scripts to KISSlicer folder.
 > 2. In KISSlicer, switch to `Printer` tab. Then select `Firmware` sub-tab.
 > 3. add script command line in `Posr-Process`. ex: `dgm-temp-tower.py -p "<FILE>"`
-![](./image/post-process.png)
+> ![](./image/post-process.png)
+>
 > Use & to execute scripts sequentially
 > ex: `dgm-heatbed-off.py "<FILE>" 1 & dgm-pause.py -p "<FILE>" 5`
 > Turn off heatbed at 1mm height, and pause print at 5mm height.
