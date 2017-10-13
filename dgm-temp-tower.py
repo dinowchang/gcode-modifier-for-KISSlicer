@@ -71,7 +71,7 @@ def add_temp_control(inputFile, outputFile, zOffset, zStep, tOffset, tStep):
 
     lineNum = 1
     line = fInput.readline()
-    if line.find('KISSlicer') == -1:
+    if not 'KISSlicer' in line:
         fOutput.close()
         fInput.close()
         print("Input file is not a KISSlicer gcode file.")
@@ -81,9 +81,10 @@ def add_temp_control(inputFile, outputFile, zOffset, zStep, tOffset, tStep):
 
     for line in fInput:
         lineNum += 1
-        if line.find('BEGIN_LAYER_OBJECT') >= 0:
+        if 'BEGIN_LAYER_OBJECT' in line:
             fOutput.write(line)
-            dummy, data_str = line.rsplit('=', 1)
+            data_str = line.split('z=', 1)[1]
+            data_str = data_str.split(' ', 1)[0]
             z = float(data_str)
             if z >= zTarget:
                 fOutput.write('M109 S' + str(tTaeget) + '\n')

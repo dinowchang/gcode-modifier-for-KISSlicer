@@ -74,7 +74,7 @@ def add_pause_control(
 
     lineNum = 1
     line = fInput.readline()
-    if line.find('KISSlicer') == -1:
+    if not 'KISSlicer' in line:
         fOutput.close()
         fInput.close()
         print("Input file is not a KISSlicer gcode file.")
@@ -90,15 +90,15 @@ def add_pause_control(
 
     for line in fInput:
         lineNum += 1
-        if line.find('use_destring ') >= 0:
+        if 'use_destring ' in line:
             dummy, data_str = line.rsplit('=', 1)
             use_destring = int(data_str)
             logging.debug('use_destring = ' + str(use_destring))
-        elif line.find('destring_suck ') >= 0:
+        elif 'destring_suck ' in line:
             dummy, data_str = line.rsplit('=', 1)
             destring_suck = float(data_str)
             logging.debug('destring_suck = ' + str(destring_suck))
-        elif line.find('destring_suck_speed_mm_per_s ') >= 0:
+        elif 'destring_suck_speed_mm_per_s ' in line:
             dummy, data_str = line.rsplit('=', 1)
             destring_suck_speed = float(data_str)
             logging.debug('destring_suck_speed = ' + str(destring_suck_speed))
@@ -107,8 +107,9 @@ def add_pause_control(
             dummy, data_str = gcode[0].rsplit('S', 1)
             cur_temp = int(data_str)
             logging.debug('Line' + str(lineNum) + ' Temp = ' + str(cur_temp))
-        elif line.find('BEGIN_LAYER_OBJECT') >= 0:
-            dummy, data_str = line.rsplit('=', 1)
+        elif 'BEGIN_LAYER_OBJECT' in line:
+            data_str = line.split('z=', 1)[1]
+            data_str = data_str.split(' ', 1)[0]
             z = float(data_str)
             if z >= zTarget:
                 print('Line :', lineNum, 'Pause at', z, 'mm')

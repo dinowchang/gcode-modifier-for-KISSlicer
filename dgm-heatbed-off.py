@@ -53,7 +53,7 @@ def add_headbed_off_control(input_file, output_file, height):
 
     lineNum = 1
     line = fInput.readline()
-    if line.find('KISSlicer') == -1:
+    if not 'KISSlicer' in line:
         fOutput.close()
         fInput.close()
         print("Input file is not a KISSlicer gcode file.")
@@ -67,8 +67,9 @@ def add_headbed_off_control(input_file, output_file, height):
         lineNum += 1
         fOutput.write(line)
 
-        if line.find('BEGIN_LAYER_OBJECT') >= 0:
-            dummy, data_str = line.rsplit('=', 1)
+        if 'BEGIN_LAYER_OBJECT' in line:
+            data_str = line.split('z=', 1)[1]
+            data_str = data_str.split(' ', 1)[0]
             z = float(data_str)
             if z >= zTarget:
                 print('Line :', lineNum, 'Turn off heatbed at', z, 'mm')
