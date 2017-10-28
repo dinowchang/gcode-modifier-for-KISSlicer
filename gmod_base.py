@@ -23,7 +23,7 @@ class GmodBase:
         self.pause = False
         self.comment_parser = self.generic_parser
 
-        self.z = 0
+        self.height = 0
         self.relative_extruder = False
 
         self.parser = argparse.ArgumentParser()
@@ -60,6 +60,8 @@ class GmodBase:
         if args.pause:
             self.pause = True
 
+        return args
+
     def show_args(self):
         print('Input file :', self.origin_file)
         print('Backup file :', self.backup_file)
@@ -93,6 +95,9 @@ class GmodBase:
             print("Couldn't open origin file: ", self.origin_file)
             return False
 
+    def write(self, line):
+        self.f_origin.write(line)
+
     def close(self):
         self.f_origin.close()
         self.f_backup.close()
@@ -106,8 +111,8 @@ class GmodBase:
         if 'BEGIN_LAYER_OBJECT' in line:
             data = line.split('z=', 1)[1]
             data = data.split(' ', 1)[0]
-            self.z = float(data)
-            logging.debug('Line ' + str(i) + ': Height = ' + str(self.z))
+            self.height = float(data)
+            # logging.debug('Line ' + str(i) + ': Height = ' + str(self.height))
 
     def gcode_parser(self, line, i):
         if line.find('M83') == 0 or line.find('m83') == 0:
@@ -115,9 +120,17 @@ class GmodBase:
         if line.find('M82') == 0 or line.find('m82') == 0:
             self.relative_extruder = False
 
+    def gcode_mod(self, line, i):
+        """  rewrite this method to modify gcode
+                return True if you don't want to write line back"""
+        return False
+
     def process(self):
         ret = self.open()
         if ret is False:
+            if self.pause is True:
+                print('')
+                os.system('pause')
             return
 
         for i, line in enumerate(self.f_backup, 1):
@@ -126,19 +139,19 @@ class GmodBase:
             else:
                 self.gcode_parser(line, i)
 
-            # modify G-code here
-            self.f_origin.write(line)
+            ret = self.gcode_mod(line, i)
+            if ret is False:
+                self.write(line)
 
         self.close()
 
+        if self.pause is True:
+            print('')
+            os.system('pause')
 
 if __name__ == '__main__':
     gmod = GmodBase()
     gmod.parse_args()
     gmod.show_args()
     gmod.process()
-    if gmod.pause is True:
-        print('')
-        os.system('pause')
-
 
