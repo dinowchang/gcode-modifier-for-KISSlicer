@@ -40,5 +40,4 @@ if __name__ == '__main__':
     gmod = GmodHeatbedOff()
     gmod.parse_args()
     gmod.show_args()
-    logging.debug('===== Debug =====')
     gmod.process()
