@@ -10,7 +10,6 @@ Created on 2017/10/25
 import argparse
 import logging
 import os
-import sys
 
 
 class GmodBase:
@@ -76,9 +75,6 @@ class GmodBase:
         except OSError:
             print("Fail to backup input file !!!")
             return False
-        except:
-            print("Unexpected error:", sys.exc_info()[0])
-            return False
 
         try:
             self.f_backup = open(self.backup_file, 'r')
@@ -107,14 +103,14 @@ class GmodBase:
             logging.debug('Line ' + str(i) + ': Find KISSlicer')
             self.comment_parser = self.kisslicer_parser
 
-    def kisslicer_parser(self, line, i):
+    def kisslicer_parser(self, line, _):
         if 'BEGIN_LAYER_OBJECT' in line:
             data = line.split('z=', 1)[1]
             data = data.split(' ', 1)[0]
             self.height = float(data)
             # logging.debug('Line ' + str(i) + ': Height = ' + str(self.height))
 
-    def gcode_parser(self, line, i):
+    def gcode_parser(self, line, _):
         if line.find('M83') == 0 or line.find('m83') == 0:
             self.relative_extruder = True
         if line.find('M82') == 0 or line.find('m82') == 0:
@@ -149,9 +145,9 @@ class GmodBase:
             print('')
             os.system('pause')
 
+
 if __name__ == '__main__':
     gmod = GmodBase()
     gmod.parse_args()
     gmod.show_args()
     gmod.process()
-
