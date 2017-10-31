@@ -10,7 +10,7 @@
 > ![](./image/post-process.png)
 >
 > 可利用 & 串連多個命令，例如
-> `dgm-heatbed-off.py "<FILE>" 1 & dgm-pause.py -p "<FILE>" 5`
+> `gmod_heatbed_off.py "<FILE>" 1 & dgm-pause.py -p "<FILE>" 5`
 > 表示在 1mm 高的位置關閉熱床，然後在 5mm 高的位置暫停列印
 
 
@@ -25,7 +25,7 @@
 ## Heatbed Off
 - 功能: 在指定的層高插入暫停命令
 - 使用方式:
-	dgm-heatbed-off.py [-p] input-file height
+	gmod_heatbed_off.py [-p] input-file height
 	* **input-file** : 要處理的 gcode 檔
 	* **height** : 要關閉熱床的高度
 
@@ -44,10 +44,10 @@
 - 功能: 每隔一個固定高度，插入一個溫度命令。用來做溫度測試。
 - 建議模型: [Better Temperature Tower v5 220-180](https://www.thingiverse.com/thing:2222308)
 - 使用方式:
-	dgm-temp-tower.py [-p] [-zo Z_OFFSET] [-zs Z_STEP] [-to TEMP_OFFSET] [-ts TEMP_STEP] input-file
+	dgm-temp-tower.py [-p] [-ho HEIGHT_OFFSET] [-hs HEIGHT_STEP] [-to TEMP_OFFSET] [-ts TEMP_STEP] input-file
 	* **input-file** : 要處理的 gcode 檔
-	* `-zo Z_OFFSET` : 開始插入溫度命令的高度，預設值 1.8 mm
-	* `-zs Z_STEP` : 插入溫度命令的高度間隔，預設值 7.0 mm
+	* `-ho HEIGHT_OFFSET` : 開始插入溫度命令的高度，預設值 2.0 mm
+	* `-hs HEIGHT_STEP` : 插入溫度命令的高度間隔，預設值 7.0 mm
 	* `-to TEMP_OFFSET` : 溫度測試的初始溫度，預設值 220 C
 	* `-ts TEMP_STEP` : 溫度測試的溫度間隔，預設值 -5 C
 	* 若使用建議的模型，可不用下參數，完全使用預設值即可。

@@ -9,7 +9,7 @@ You can run the script in KISSlicer,
 > ![](./image/post-process.png)
 >
 > Use & to execute scripts sequentially
-> ex: `dgm-heatbed-off.py "<FILE>" 1 & dgm-pause.py -p "<FILE>" 5`
+> ex: `gmod_heatbed_off.py "<FILE>" 1 & dgm-pause.py -p "<FILE>" 5`
 > Turn off heatbed at 1mm height, and pause print at 5mm height.
 
 Or run the script in Command Prompt
@@ -23,7 +23,7 @@ Or run the script in Command Prompt
 ## Heatbed Off
 - Description: Turn off heatbed at specified height
 - Usage:
-	dgm-heatbed-off.py [-p] input-file height
+	gmod_heatbed_off.py [-p] input-file height
 	* **input-file**:
 	* **height**:
 
@@ -42,10 +42,10 @@ Or run the script in Command Prompt
 - Description: Insert temperature control command for temperature tower test
 - Model: [Better Temperature Tower v5 220-180](https://www.thingiverse.com/thing:2222308)
 - Usage:
-	dgm-temp-tower.py [-p] [-zo Z_OFFSET] [-zs Z_STEP] [-to TEMP_OFFSET] [-ts TEMP_STEP] input-file
+	dgm-temp-tower.py [-p] [-ho HEIGHT_OFFSET] [-hs HEIGHT_STEP] [-to TEMP_OFFSET] [-ts TEMP_STEP] input-file
 	* **input-file**:
-	* `-zo Z_OFFSET`: The height of first test block. Default value is 1.8 mm.
-	* `-zs Z_STEP`: The thickness of each test block. Default value is 7.0 mm.
+	* `-ho HEIGHT_OFFSET`: The height of first test block. Default value is 2.0 mm.
+	* `-hs HEIGHT_STEP`: The thickness of each test block. Default value is 7.0 mm.
 	* `-to TEMP_OFFSET`: The temperature of first test block. Default value is 220 C.
 	* `-ts TEMP_STEP`: The temperature increased for each test block. Default value is -5 C.
 	* All default values of arguments are designed for [Better Temperature Tower v5 220-180](https://www.thingiverse.com/thing:2222308)
