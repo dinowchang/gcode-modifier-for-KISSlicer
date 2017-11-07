@@ -23,7 +23,9 @@ class GmodBase:
         self.comment_parser = self.generic_parser
 
         self.height = 0
+        self.relative_position = False
         self.relative_extruder = False
+        self.temperature = 0
 
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument('-d', '--debug',
@@ -115,6 +117,14 @@ class GmodBase:
             self.relative_extruder = True
         if line.find('M82') == 0 or line.find('m82') == 0:
             self.relative_extruder = False
+        if line.find('G91') == 0 or line.find('g91') == 0:
+            self.relative_position = True
+        if line.find('G90') == 0 or line.find('g90') == 0:
+            self.relative_position = False
+        if line.find('M109') == 0 or line.find('M104') == 0 or line.find('m109') == 0 or line.find('m104') == 0:
+            data = line.split(';', 1)[0]
+            data = data.rsplit('S', 1)[1]
+            self.temperature = float(data)
 
     def gcode_mod(self, line, i):
         """  rewrite this method to modify gcode
