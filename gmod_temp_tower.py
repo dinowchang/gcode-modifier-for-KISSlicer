@@ -20,22 +20,22 @@ class GmodTempTower(GmodBase):
         self.h_target = 0
         self.t_target = 0
         self.parser.add_argument('-ho', '--h-offset',
-                                 help='The height of first test block',
+                                 help='The height of first test block, default: %(default)s mm',
                                  type=float,
                                  default=2.0)
 
         self.parser.add_argument('-hs', '--h-step',
-                                 help='The thickness of each test block',
+                                 help='The thickness of each test block, default: %(default)s mm',
                                  type=float,
                                  default=7.0)
 
         self.parser.add_argument('-to', '--temp-offset',
-                                 help='The temperature of first test block',
+                                 help='The temperature of first test block, default: %(default)s C',
                                  type=int,
                                  default=220)
 
         self.parser.add_argument('-ts', '--temp-step',
-                                 help='The temperature increased for each test block',
+                                 help='The temperature increased for each test block, default: %(default)s C',
                                  type=int,
                                  default=-5)
 

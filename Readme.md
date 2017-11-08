@@ -17,35 +17,32 @@ Or run the script in Command Prompt
 
 # Usage of scripts
 ## Common arguments
-* `-p，--pause`
-  Before scripts end, wait any key to check messages. It's useful when the script is called in KISSlicer.
+* **input-file**: Input gcode file
+* `-p，--pause`: Before scripts end, wait any key to check messages. It's useful when the script is called in KISSlicer.
 
 ## Heatbed Off
 - Description: Turn off heatbed at specified height
 - Usage:
 	gmod_heatbed_off.py [-p] input-file height
-	* **input-file**:
-	* **height**:
+	* **height**: The height to turn off heatbed
 
 ## Pause
 - Description: Pause print at specified height
 - Usage:
 	gmod_pause.py [-p] [-z Z_LIFT] [-x X_LOC] [-y Y_LOC] [-c] [-rl RETRACTION_LENGTH] [-rs RETRACTION_SPEED] input-file height [height ...]
-	* **input-file**:
-	* **height**:
-	* `-z Z_LIFT`:
-	* `-x X_LOC`:
-	* `-y Y_LOC`:
-	* `-rl RETRACTION_LENGTH` :
-	* `-rl RETRACTION_LENGTH` :
-	* `-c`:
+	* **height**: The height list to pause
+	* `-z Z_LIFT`: The height to lift before pause, default: 5.0 mm
+	* `-x X_LOC`: The x-axis location to park when paused. The head won't move if this value is not set.
+	* `-y Y_LOC`: The x-axis location to park when paused. The head won't move if this value is not set.
+	* `-rl RETRACTION_LENGTH` : The length to retract before printer is paused, default: 0 mm
+	* `-rs RETRACTION_SPEED` : The speed of retraction before printer is paused, default: 0 mm
+	* `-c`: Cool down the extruder when printer is paused. The 1st `resume` will warm up extruder then pause again.
 
 ## Temperature Tower
 - Description: Insert temperature control command for temperature tower test
 - Model: [Better Temperature Tower v5 220-180](https://www.thingiverse.com/thing:2222308)
 - Usage:
 	gmod_temp_tower.py [-p] [-ho HEIGHT_OFFSET] [-hs HEIGHT_STEP] [-to TEMP_OFFSET] [-ts TEMP_STEP] input-file
-	* **input-file**:
 	* `-ho HEIGHT_OFFSET`: The height of first test block. Default value is 2.0 mm.
 	* `-hs HEIGHT_STEP`: The thickness of each test block. Default value is 7.0 mm.
 	* `-to TEMP_OFFSET`: The temperature of first test block. Default value is 220 C.

@@ -21,9 +21,10 @@ class GmodPause(GmodBase):
         self.retraction_l = 0
         self.retraction_s = 1200
         self.h_index = 0
+        self.h_target = 0
 
         self.parser.add_argument('height',
-                                 help='The height to pause',
+                                 help='The height list to pause',
                                  type=float,
                                  nargs='+')
 
@@ -33,17 +34,20 @@ class GmodPause(GmodBase):
                                  default=5.0)
 
         self.parser.add_argument('-x', '--x_loc',
-                                 help='The x-axis location to pause',
+                                 help='The x-axis location to park when paused. ' +
+                                      'The head won\'t move if this value is not set.',
                                  type=float,
                                  default=None)
 
         self.parser.add_argument('-y', '--y_loc',
-                                 help='The y-axis location to pause',
+                                 help='The y-axis location to park when paused. ' +
+                                      'The head won\'t move if this value is not set.',
                                  type=float,
                                  default=None)
 
         self.parser.add_argument('-c', '--cool_down',
-                                 help='Cool down the extruder when printer is paused',
+                                 help='Cool down the extruder when printer is paused. ' +
+                                      'The 1st resume will warm up extruder then pause again.',
                                  action='store_true')
 
         self.parser.add_argument('-rl', '--retraction_length',
@@ -94,8 +98,8 @@ class GmodPause(GmodBase):
                 if self.relative_extruder is False:
                     self.write('M83 ; Relative Extruder mode\n')
                 self.write('G1 E-' + str(self.retraction_l) +
-                              ' F' + str(self.retraction_s) +
-                              '; Retraction\n')
+                           ' F' + str(self.retraction_s) +
+                           '; Retraction\n')
                 if self.relative_extruder is False:
                     self.write('M82 ; Absolute Extruder mode\n')
                     self.write('G92 E0 ; Reset extruder pos\n')
@@ -115,18 +119,19 @@ class GmodPause(GmodBase):
             # beep
             self.write('M300 S880 P1000 ; Beep\n')
 
-            # cool down
+            #  cool down
             if self.cool_down is True:
                 self.write('M104 S0 ; Cool down\n')
                 self.write('M0 ; Pause\n')
                 self.write('M109 S' + str(self.temperature) + ' ; Warm up\n')
 
-            #pause
+            #  pause
             self.write('M0 ; Pause\n')
             self.write('; END_PAUSE_PROCESS\n')
             return True
 
         return False
+
 
 if __name__ == '__main__':
     gmod = GmodPause()

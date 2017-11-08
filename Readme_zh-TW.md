@@ -19,28 +19,25 @@
 
 # 使用方式
 ## 一般參數
-* `-p，--pause`
-  程式結束前，暫停等待使用者按任意鍵。方便在 KISSlicer 中呼叫時，檢視執行過程的訊息。
+* **input-file** : 要處理的 gcode 檔
+* `-p，--pause` : 程式結束前，暫停等待使用者按任意鍵。方便在 KISSlicer 中呼叫時，檢視執行過程的訊息。
 
 ## Heatbed Off
 - 功能: 在指定的層高插入暫停命令
 - 使用方式:
 	gmod_heatbed_off.py [-p] input-file height
-	* **input-file** : 要處理的 gcode 檔
 	* **height** : 要關閉熱床的高度
 
 ## Pause
 - 功能: 在指定的層高插入暫停命令
 - 使用方式:
 	gmod_pause.py [-p] [-z Z_LIFT] [-x X_LOC] [-y Y_LOC] [-c] [-rl RETRACTION_LENGTH] [-rs RETRACTION_SPEED] input-file height [height ...]
-
-	* **input-file** : 要處理的 gcode 檔
-	* **height** : 要暫停的高度。若要輸入多個，以空格隔開即可
+	* **height**: 暫停高度的列表
 	* `-z Z_LIFT` : 暫停後，擠出頭抬高的距離。預設值為 10.0 mm
 	* `-x X_LOC` : 暫停後，X 軸移到指定的位置。未輸入代表不移動。
 	* `-y Y_LOC` : 暫停後，Y 軸移到指定的位置。未輸入代表不移動。
 	* `-rl RETRACTION_LENGTH` : 回抽長度
-	* `-rl RETRACTION_LENGTH` : 回抽速度
+	* `-rs RETRACTION_SPEED` : 回抽速度
 	* `-c` : 暫停後，關閉加熱擠出頭。第一次繼續，會重新加熱擠出頭，再暫停。第二次繼續，才開始列印。若列印暫停時人不在列印機旁邊，建議開啟此功能。等人可以操作列印機時再重新加熱。
 
 ## Temperature Tower
@@ -48,7 +45,6 @@
 - 建議模型: [Better Temperature Tower v5 220-180](https://www.thingiverse.com/thing:2222308)
 - 使用方式:
 	gmod_temp_tower.py [-p] [-ho HEIGHT_OFFSET] [-hs HEIGHT_STEP] [-to TEMP_OFFSET] [-ts TEMP_STEP] input-file
-	* **input-file** : 要處理的 gcode 檔
 	* `-ho HEIGHT_OFFSET` : 開始插入溫度命令的高度，預設值 2.0 mm
 	* `-hs HEIGHT_STEP` : 插入溫度命令的高度間隔，預設值 7.0 mm
 	* `-to TEMP_OFFSET` : 溫度測試的初始溫度，預設值 220 C
