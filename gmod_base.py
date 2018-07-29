@@ -15,25 +15,33 @@ import os
 class GmodBase:
 
     def __init__(self):
+        # process parameter
         self.origin_file = ""
         self.backup_file = ""
         self.f_origin = None
         self.f_backup = None
         self.pause = False
+        self.test_only = False
         self.comment_parser = self.generic_parser
 
+        # g-code state
         self.height = 0
         self.relative_position = False
         self.relative_extruder = False
         self.temperature = 0
 
         self.parser = argparse.ArgumentParser()
+
+        self.parser.add_argument('-p', '--pause',
+                                 help='Pause before exit',
+                                 action='store_true')
+
         self.parser.add_argument('-d', '--debug',
                                  help='Enable debug mode',
                                  action='store_true')
 
-        self.parser.add_argument('-p', '--pause',
-                                 help='Pause before exit',
+        self.parser.add_argument('--test',
+                                 help='Run test flow only, won\'t modity file.',
                                  action='store_true')
 
         self.parser.add_argument('input-file',
@@ -45,6 +53,12 @@ class GmodBase:
 
         log_format = "[%(filename)s:%(lineno)s] %(message)s"
         if args.debug:
+            logging.basicConfig(format=log_format, level=logging.DEBUG)
+        else:
+            logging.basicConfig(format=log_format)
+
+        if args.test:
+            self.test_only = True
             logging.basicConfig(format=log_format, level=logging.DEBUG)
         else:
             logging.basicConfig(format=log_format)
@@ -156,8 +170,28 @@ class GmodBase:
             os.system('pause')
 
 
+    def test_flow(self):
+        try:
+            self.f_origin = open(self.origin_file, 'r')
+        except OSError:
+            print("Couldn't open origin file: ", self.origin_file)
+            return
+
+        for i, line in enumerate(self.f_origin, 1):
+            if line[0] == ';':
+                self.comment_parser(line, i)
+            else:
+                self.gcode_parser(line, i)
+
+        self.f_origin.close()
+
+
 if __name__ == '__main__':
     gmod = GmodBase()
     gmod.parse_args()
     gmod.show_args()
-    gmod.process()
+    if gmod.test_only:
+        gmod.test_flow()
+    else:
+        gmod.process()
+
