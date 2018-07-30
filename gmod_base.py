@@ -25,6 +25,10 @@ class GmodBase:
         self.comment_parser = self.generic_parser
 
         # g-code state
+        self.pos = [None, None, None]
+        self.ext_pos = None
+        self.ext_prev_pos = None
+        self.begin_of_layer = False
         self.height = 0
         self.layer = 0
         self.relative_position = False
@@ -129,26 +133,40 @@ class GmodBase:
                 print("KISSlicer ver " + data + " maybe not supported correctly.")
 
         if 'BEGIN_LAYER_OBJECT' in line:
+            self.begin_of_layer = True
             data = line.split('z=', 1)[1]
             data = data.split(' ', 1)[0]
             self.height = float(data)
             self.layer += 1
             # logging.debug('Line ' + str(i) + ': Height = ' + str(self.height))
+        else:
+            self.begin_of_layer = False
 
     def gcode_parser(self, line, _):
-        if line.startswith('M83') or line.startswith('m83'):
+        line = line.upper().split(';', 1)[0]
+        if line.startswith('M83'):
             self.relative_extruder = True
-        if line.startswith('M82') or line.startswith('m82'):
+        if line.startswith('M82'):
             self.relative_extruder = False
-        if line.startswith('G91') or line.startswith('g91'):
+        if line.startswith('G91'):
             self.relative_position = True
-        if line.startswith('G90') or line.startswith('g90'):
+        if line.startswith('G90'):
             self.relative_position = False
-        if line.startswith('M109') or line.startswith('M104') or line.startswith('m109') or line.startswith('m104'):
+        if line.startswith('M109') or line.startswith('M104'):
             data = line.split(';', 1)[0]
             data = data.rsplit('S', 1)[1]
             data = data.split(' ', 1)[0]
             self.temperature = float(data)
+        if line.startswith('G28'):
+            if 'X' not in line and 'Y' not in line and 'Z' not in line:
+                self.pos = [0, 0, 0]
+            else:
+                if 'X' in line:
+                    self.pos[0] = 0
+                if 'Y' in line:
+                    self.pos[1] = 0
+                if 'Z' in line:
+                    self.pos[2] = 0
 
     def gcode_mod(self, line, i):
         """  rewrite this method to modify gcode
