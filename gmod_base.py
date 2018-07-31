@@ -31,6 +31,7 @@ class GmodBase:
         self.begin_of_layer = False
         self.height = 0
         self.layer = 0
+        self.thickness = 0
         self.relative_position = False
         self.relative_extruder = False
         self.temperature = 0
@@ -57,13 +58,11 @@ class GmodBase:
         args = self.parser.parse_args()
 
         log_format = "[%(filename)s:%(lineno)s] %(message)s"
-        if args.debug:
-            logging.basicConfig(format=log_format, level=logging.DEBUG)
-        else:
-            logging.basicConfig(format=log_format)
 
         if args.test:
             self.test_only = True
+
+        if args.debug or args.test:
             logging.basicConfig(format=log_format, level=logging.DEBUG)
         else:
             logging.basicConfig(format=log_format)
