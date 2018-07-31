@@ -60,7 +60,7 @@ class GmodPrintFromHeight(GmodBase):
                 if self.height + self.thickness >= self.h_start:
                     self.remove_gcode = False
                     logging.debug("Stop removing gcode at line: " + str(i))
-                    self.write('G1 Z' + str(self.height + 10) + ' ; Lift the extruder higher then the model\n')
+                    self.write('G1 Z' + "%.3f" % (self.height + 10) + ' ; Lift the extruder higher then the model\n')
 
         return self.remove_gcode
 

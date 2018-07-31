@@ -13,9 +13,13 @@ from gmod_base import GmodBase
 comment_Nothing = ["; Nothing\n"]
 kiss_begin_of_layer = ["; BEGIN_LAYER_OBJECT z=0.300 z_thickness=0.100\n"]
 
+s3d_thickness = [";   layerHeight,0.3\n"]
+s3d_begin_of_layer = ["; layer 8, Z = 0.948\n"]
+
 # g-code test pattern
 gcode_G28 = ["G28     ; Home all axes\n"]
 gcode_G28_XZ = ["G28 X Z ; Home the X and Z axes\n"]
+
 
 class TestGmodBase(TestCase):
     def setUp(self):
@@ -29,9 +33,25 @@ class TestGmodBase(TestCase):
             self.gmod.kisslicer162_parser(line, i)
         self.assertEqual(self.gmod.begin_of_layer, True)
         self.assertEqual(self.gmod.height, 0.3)
+        self.assertEqual(self.gmod.thickness, 0.1)
 
         for i, line in enumerate(comment_Nothing, 1):
             self.gmod.kisslicer162_parser(line, 1)
+        self.assertEqual(self.gmod.begin_of_layer, False)
+
+    def test_s3d_parser_thickness(self):
+        for i, line in enumerate(s3d_thickness, 1):
+            self.gmod.s3d_parser302(line, i)
+        self.assertEqual(self.gmod.thickness, 0.3)
+
+    def test_s3d_parser_begin_of_layer(self):
+        for i, line in enumerate(s3d_begin_of_layer, 1):
+            self.gmod.s3d_parser302(line, i)
+        self.assertEqual(self.gmod.begin_of_layer, True)
+        self.assertEqual(self.gmod.height, 0.948)
+
+        for i, line in enumerate(comment_Nothing, 1):
+            self.gmod.s3d_parser302(line, 1)
         self.assertEqual(self.gmod.begin_of_layer, False)
 
     def test_gcode_parser_G28(self):
